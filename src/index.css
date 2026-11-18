@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { @apply bg-white font-sans text-ink antialiased; overflow-x: hidden; }
+  h1, h2, h3 { @apply font-serif font-normal tracking-tight; }
+  :focus-visible { outline: 2px solid #111; outline-offset: 2px; }
+}
+
+/* Slightly zoomed-in look on larger screens (like browser zoom ~110%) */
+@media (min-width: 768px) {
+  #root { zoom: 1.1; }
+}
+
+/* Soft blur fade pinned to the bottom of the viewport.
+   Sits inside the content wrapper (above the footer), so the footer is never blurred. */
+.bottom-blur {
+  position: sticky;
+  bottom: 0;
+  height: 0;
+  z-index: 40;
+  pointer-events: none;
+}
+.bottom-blur::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 110px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  background: linear-gradient(to top, rgba(255,255,255,0.55), rgba(255,255,255,0));
+  -webkit-mask-image: linear-gradient(to top, #000 0%, rgba(0,0,0,0.6) 45%, transparent 100%);
+  mask-image: linear-gradient(to top, #000 0%, rgba(0,0,0,0.6) 45%, transparent 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* Skeleton shimmer */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: #efefef;
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes skeleton-shimmer {
+  to { transform: translateX(100%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after { animation: none; display: none; }
+}
+
+/* Navbar glass: soft frosted look with light edges (replaces the component's dark inset shadows) */
+.glass-surface.nav-glass {
+  box-shadow:
+    0 0 0 1px rgba(17, 17, 17, 0.055),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.55),
+    inset 0 -10px 18px -12px rgba(255, 255, 255, 0.7),
+    0 10px 32px -12px rgba(17, 17, 17, 0.14),
+    0 2px 6px rgba(17, 17, 17, 0.04);
+}
+.glass-surface.nav-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 55%);
+}
+
+/* Square design: no rounded corners anywhere (catch-all for native/browser defaults) */
+*, *::before, *::after { border-radius: 0 !important; }
+
+/* Exception: the glass navbar bar keeps its original rounded pill shape */
+.glass-surface.nav-glass,
+.glass-surface.nav-glass::before { border-radius: 28px !important; }
+.glass-surface.nav-glass .glass-surface__content,
+.glass-surface.nav-glass .glass-surface__canvas,
+.glass-surface.nav-glass .glass-surface__frame,
+.glass-surface.nav-glass .glass-surface__sheen,
+.glass-surface.nav-glass .glass-surface__rim { border-radius: inherit !important; }
+
+/* Square radio buttons (native radios are always circles) */
+input[type='radio'] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-grid;
+  place-content: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #111;
+  background: #fff;
+}
+input[type='radio']::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: #111;
+  transform: scale(0);
+  transition: transform 0.15s ease;
+}
+input[type='radio']:checked::before { transform: scale(1); }
