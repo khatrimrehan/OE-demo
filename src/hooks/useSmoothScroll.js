@@ -21,7 +21,7 @@ export default function useSmoothScroll({ ease = 0.07, multiplier = 1, flick = 4
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
 
     const root = document.documentElement;
-    const FOLLOW = 0.65; // how tightly the page tracks a finger that is still down
+    const FOLLOW = 0.25; // how tightly the page tracks a finger that is still down
     const maxScroll = () => Math.max(0, root.scrollHeight - window.innerHeight);
     const clamp = (v) => Math.min(maxScroll(), Math.max(0, v));
     const locked = () => document.body.style.overflow === 'hidden';
