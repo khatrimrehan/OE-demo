@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Odour Elixirs — fragrances designed to become part of your signature." />
+    <meta name="theme-color" content="#191B1B" />
+    <script>try{var t=localStorage.getItem("oe-theme");document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark")}catch(e){document.documentElement.setAttribute("data-theme","dark")}</script>
+    <title>Odour Elixirs</title>
+    <link rel="preload" href="/fonts/BellGothicStd-Bold.woff" as="font" type="font/woff" crossorigin />
+    <link rel="preload" href="/fonts/MagdaCleanMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <style>
+      html{background:#191B1B}html[data-theme=light]{background:#fff}
+      .boot-sk{background:#242828;position:relative;overflow:hidden;border-radius:0}
+      .boot-sk::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);animation:boot-sh 1.4s ease-in-out infinite}
+      html[data-theme=light] .boot-sk{background:#efefef}html[data-theme=light] .boot-sk::after{background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent)}
+      @keyframes boot-sh{to{transform:translateX(100%)}}
+      @media (prefers-reduced-motion:reduce){.boot-sk::after{animation:none;display:none}}
+    </style>
+  </head>
+  <body>
+    <div id="root"><div aria-hidden="true" style="max-width:1140px;margin:0 auto;padding:0 20px">
+      <div class="boot-sk" style="height:72px;border-radius:0;margin:0 -20px"></div>
+      <div class="boot-sk" style="height:44px;width:78%;margin:56px auto 0"></div>
+      <div class="boot-sk" style="height:18px;width:56%;margin:20px auto 0"></div>
+      <div class="boot-sk" style="height:44px;width:160px;margin:24px auto 0;border-radius:0"></div>
+      <div class="boot-sk" style="width:200px;aspect-ratio:4/5;margin:48px auto 0;border-radius:0"></div>
+    </div></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

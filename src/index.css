@@ -1,0 +1,280 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* ---- Brand fonts (self-hosted from /public/fonts) ---- */
+@font-face{font-family:"Bell Gothic Std";font-weight:300;font-style:normal;font-display:swap;src:url("/fonts/BellGothicStd-Light.woff") format("woff")}
+@font-face{font-family:"Bell Gothic Std";font-weight:700;font-style:normal;font-display:swap;src:url("/fonts/BellGothicStd-Bold.woff") format("woff")}
+@font-face{font-family:"Bell Gothic Std";font-weight:900;font-style:normal;font-display:swap;src:url("/fonts/BellGothicStd-Black.woff") format("woff")}
+@font-face{font-family:"Magda Clean Mono";font-weight:400;font-style:normal;font-display:swap;src:url("/fonts/MagdaCleanMono-Regular.woff2") format("woff2"),url("/fonts/MagdaCleanMono-Regular.woff") format("woff")}
+@font-face{font-family:"Magda Clean Mono";font-weight:700;font-style:normal;font-display:swap;src:url("/fonts/MagdaCleanMono-Bold.woff2") format("woff2"),url("/fonts/MagdaCleanMono-Bold.woff") format("woff")}
+@font-face{font-family:"Magda Clean Mono";font-weight:900;font-style:normal;font-display:swap;src:url("/fonts/MagdaCleanMono-Black.woff2") format("woff2"),url("/fonts/MagdaCleanMono-Black.woff") format("woff")}
+
+
+@theme {
+  --font-bell: "Bell Gothic Std";
+}
+
+/* ---- Theme tokens (dark is the default) ---- */
+:root {
+  color-scheme: dark;
+  --c-page: 25 27 27;        /* #191B1B */
+  --c-ink: 240 240 238;
+  --c-onink: 25 27 27;
+  --c-muted: 154 158 157;
+  --c-surface: 33 36 36;
+  --c-line: 48 52 52;
+  --skeleton: #242828;
+  --skeleton-shine: rgba(255, 255, 255, 0.06);
+  --foot-a: #858c8bc1; --foot-b: #4e535372; --foot-c: #101111af;
+}
+:root[data-theme='light'] {
+  color-scheme: light;
+  --c-page: 231 225 225;
+  --c-ink: 17 17 17;
+  --c-onink: 255 255 255;
+  --c-muted: 111 111 111;
+  --c-surface: 227 219 219;
+  --c-line: 232 232 232;
+  --skeleton: #efefef;
+  --skeleton-shine: rgba(255, 255, 255, 0.75);
+  --foot-a: #504f4f; --foot-b: #c8c8c8e9; --foot-c: #ffffffd6;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { @apply bg-page font-sans text-ink antialiased; overflow-x: clip; }
+  h1, h2, h3 { @apply font-serif font-bold tracking-normal; }
+  :focus-visible { outline: 2px solid rgb(var(--c-ink)); outline-offset: 2px; }
+}
+
+/* Slightly zoomed-in look on larger screens (like browser zoom ~110%) */
+@media (min-width: 768px) {
+  #root { zoom: 1.1; }
+}
+
+/* Soft blur fade pinned to the bottom of the viewport.
+   Sits inside the content wrapper (above the footer), so the footer is never blurred. */
+.bottom-blur {
+  position: sticky;
+  bottom: 0;
+  height: 0;
+  z-index: 40;
+  pointer-events: none;
+}
+.bottom-blur::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 110px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  background: linear-gradient(to top, rgb(var(--c-page) / 0.55), rgb(var(--c-page) / 0));
+  -webkit-mask-image: linear-gradient(to top, #000 0%, rgba(0,0,0,0.6) 45%, transparent 100%);
+  mask-image: linear-gradient(to top, #000 0%, rgba(0,0,0,0.6) 45%, transparent 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* Skeleton shimmer */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--skeleton);
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--skeleton-shine), transparent);
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes skeleton-shimmer {
+  to { transform: translateX(100%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after { animation: none; display: none; }
+}
+
+
+
+/* Square design: no rounded corners anywhere (catch-all for native/browser defaults) */
+*, *::before, *::after { border-radius: 0 !important; }
+
+/* Exception: the glass navbar bar keeps its original rounded pill shape */
+.glass-surface.nav-glass,
+.glass-surface.nav-glass::before { border-radius: 28px !important; }
+.glass-surface.nav-glass .glass-surface__content,
+.glass-surface.nav-glass .glass-surface__canvas,
+.glass-surface.nav-glass .glass-surface__frame,
+.glass-surface.nav-glass .glass-surface__sheen,
+.glass-surface.nav-glass .glass-surface__rim { border-radius: inherit !important; }
+
+/* Square radio buttons (native radios are always circles) */
+input[type='radio'] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-grid;
+  place-content: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgb(var(--c-ink));
+  background: rgb(var(--c-page));
+}
+input[type='radio']::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: rgb(var(--c-ink));
+  transform: scale(0);
+  transition: transform 0.15s ease;
+}
+input[type='radio']:checked::before { transform: scale(1); }
+
+/* ---- Theme switch animation ---- */
+/* Modern browsers: circular reveal from the toggle button (View Transitions API) */
+::view-transition-old(root),
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 2; animation: theme-reveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes theme-reveal {
+  from { clip-path: circle(0 at var(--tx, 50%) var(--ty, 0)); }
+  to   { clip-path: circle(var(--tr, 150vmax) at var(--tx, 50%) var(--ty, 0)); }
+}
+/* Fallback: smooth colour cross-fade */
+html.theme-fade, html.theme-fade *, html.theme-fade *::before, html.theme-fade *::after {
+  transition: background-color 0.45s ease, color 0.45s ease, border-color 0.45s ease, fill 0.45s ease !important;
+}
+
+/* -------------------------------------------------------------
+   Scroll hero: single bottle/copy timeline, responsive contact-driven push.
+   ------------------------------------------------------------- */
+.hero-scroll-scene { position: relative; height: 175svh; isolation: isolate; }
+.hero-scroll-stage {
+  position: sticky; top: 72px; display: flex; flex-direction: column;
+  align-items: center; height: calc(100svh - 72px); min-height: 0;
+  overflow: hidden; background: rgb(var(--c-page));
+}
+.hero-scroll-copy {
+  position: relative; z-index: 2; flex: 0 0 auto; width: 100%;
+  margin-top: clamp(26px, 6svh, 62px); padding-inline: 18px;
+  text-align: center; will-change: transform;
+}
+.hero-scroll-image-position {
+  position: relative; z-index: 1; flex: 0 0 auto;
+  width: min(97vw, 1100px); margin-top: -39px; pointer-events: none;
+}
+.hero-scroll-image-stack { position: relative; width: 100%; aspect-ratio: 1672 / 941; will-change: transform; }
+.hero-scroll-image { display: block; width: 100%; height: auto; -webkit-user-drag: none; user-select: none; }
+.hero-scroll-static-image { position: relative; }
+.hero-scroll-blurred-image {
+  position: absolute; inset: 0; filter: blur(9px); transform: translateZ(0);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 69%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 69%, #000 100%);
+}
+@media (max-width: 900px) {
+  .hero-scroll-scene { height: 168svh; }
+  .hero-scroll-image-position { width: 98vw; margin-top: -24px; }
+}
+@media (max-width: 640px) {
+  .hero-scroll-scene { height: 160svh; }
+  .hero-scroll-copy { margin-top: clamp(22px, 5svh, 45px); padding-inline: 16px; }
+  .hero-scroll-image-position { width: 100%; margin-top: -8px; }
+  .hero-scroll-blurred-image { filter: blur(5px); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero-scroll-copy { margin-top: 10px; }
+  .hero-scroll-copy h1 { font-size: clamp(24px, 4vw, 32px); }
+  .hero-scroll-copy p { margin-top: 5px; font-size: 13px; }
+  .hero-scroll-copy > div:last-child { margin-top: 8px; }
+  .hero-scroll-image-position { width: min(52vw, 500px); margin-top: -16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-scene { height: auto; }
+  .hero-scroll-stage {
+    position: relative; top: auto; height: auto; min-height: 0;
+    overflow: visible; padding-bottom: 36px;
+  }
+}
+/* The subtle trailing dot remains visible against light AND dark themes. */
+.cursor-follower {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50% !important; /* override site's square-everything rule */
+  background: white;
+  mix-blend-mode: difference;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+  will-change: transform;
+}
+.cursor-follower.is-visible { opacity: 0.95; }
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .cursor-follower { display: none; }
+}
+
+/* Remove browser's default crossfade */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none !important;
+  mix-blend-mode: normal;
+}
+
+/* Keep old theme behind new theme */
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+}
+
+/* Prevent competing CSS color transitions */
+html.theme-switching,
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: none !important;
+}
+
+/* Respect accessibility settings */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
+/* Remove mobile tap highlight */
+button,
+a,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent sticky hover on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  button:hover,
+  button:active,
+  button:focus:not(:focus-visible) {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+/* Remove unwanted focus color */
+button:focus:not(:focus-visible) {
+  outline: none;
+}
