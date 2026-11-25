@@ -8,9 +8,9 @@ import StampLoader from './components/StampLoader';
 import Navbar from './components/Navbar';
 import CursorFollower from './components/CursorFollower';
 import Footer from './components/Footer';
-import Home from './pages/Home';
 
 // Lazy-loaded pages
+const Home = lazy(() => import('./pages/Home'));
 const Shop = lazy(() => import('./pages/Shop'));
 const ProductPage = lazy(() => import('./pages/ProductPage'));
 const Cart = lazy(() => import('./pages/Cart'));
@@ -76,15 +76,24 @@ class ErrorBoundary extends Component {
 // Loading fallback: a skeleton shaped like the page that is loading
 const Loading = () => {
   const { pathname } = useLocation();
-  const variant = pathname.startsWith('/product') || pathname === '/discovery-set'
-    ? 'product'
-    : pathname.startsWith('/journal/') ? 'article' : 'list';
+  let variant = 'shop';
+  if (pathname === '/') variant = 'home';
+  else if (pathname.startsWith('/product') || pathname === '/discovery-set') variant = 'product';
+  else if (pathname.startsWith('/journal/')) variant = 'article';
+  else if (pathname === '/journal') variant = 'journal';
+  else if (pathname === '/cart') variant = 'cart';
+  else if (pathname === '/checkout') variant = 'checkout';
+  else if (pathname.startsWith('/info/')) variant = 'info';
   return <PageSkeleton variant={variant} />;
 };
+
+// Pages with forms / primary buttons: the bottom blur would smudge them
+const NO_BOTTOM_BLUR = ['/cart', '/checkout', '/order-confirmation'];
 
 // Main App
 export default function App() {
   useSmoothScroll();
+  const { pathname } = useLocation();
   return (
     <>
       <StampLoader />
@@ -147,7 +156,7 @@ export default function App() {
       </main>
 
       {/* Blur fade at the bottom of the screen; stops above the footer */}
-      <div aria-hidden="true" className="bottom-blur" />
+      {!NO_BOTTOM_BLUR.includes(pathname) && <div aria-hidden="true" className="bottom-blur" />}
       </div>
 
       <Footer />
