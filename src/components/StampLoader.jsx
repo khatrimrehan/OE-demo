@@ -54,7 +54,7 @@ export default function StampLoader({ minDuration = 2400, oncePerSession = false
   }, [state, minDuration]);
 
   if (state === 'gone') return null;
-  const src = theme === 'dark' ? '/assets/Logos/OE_White.png' : '/assets/Logos/OE_Black.png';
+  const src = theme === 'dark' ? '/assets/Logos/OE_White.webp' : '/assets/Logos/OE_Black.webp';
 
   return (
     <div className={`oe-stamp${state === 'out' ? ' out' : ''}`} role="status" aria-label="Loading Odour Elixirs">
