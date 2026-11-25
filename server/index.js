@@ -22,6 +22,7 @@ function limited(ip) {
 const str = (v, max = 300) => String(v ?? '').trim().slice(0, max);
 
 app.post('/api/orders', async (req, res) => {
+    console.log('Order request received');
   if (limited(req.ip)) return res.status(429).json({ recorded: false, error: 'rate_limited' });
 
   const b = req.body || {};
@@ -67,7 +68,10 @@ app.post('/api/orders', async (req, res) => {
   try {
     const r = await fetch(APPS_SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload), redirect: 'follow' });
     const data = await r.json().catch(() => null);
-    if (r.ok && data?.ok === true) return res.json({ recorded: true });
+   if (r.ok && data?.ok === true) {
+  console.log('Order successfully saved to Google Sheets');
+  return res.json({ recorded: true });
+}
     console.error('Apps Script rejected the order:', r.status, data);
     return res.status(502).json({ recorded: false, error: 'sheet_rejected' });
   } catch (err) {

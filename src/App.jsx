@@ -3,6 +3,7 @@ import { Component, lazy, Suspense, useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { PageSkeleton } from './components/ui/Skeleton';
 import useSmoothScroll from './hooks/useSmoothScroll';
+import { Toaster } from 'sonner';
 
 import StampLoader from './components/StampLoader';
 import Navbar from './components/Navbar';
@@ -96,6 +97,21 @@ export default function App() {
   const { pathname } = useLocation();
   return (
     <>
+    <Toaster
+        position="top-center"
+        richColors
+        theme="dark"
+        toastOptions={{
+          style: {
+            background: '#11291e',
+            border: '1px solid #285c40',
+            color: '#dcfce7',
+            borderRadius: '12px',
+            padding: '16px',
+          },
+        }}
+      />
+    
       <StampLoader />
       <ScrollToTop />
 

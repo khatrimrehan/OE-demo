@@ -1,6 +1,6 @@
 // Google Apps Script — deploy as Web app (Execute as: Me, Who has access: Anyone).
 // Set SECRET to the same value as APPS_SCRIPT_SECRET in your server .env.
-var SECRET = 'CHANGE_ME';
+var SECRET = 'f7acae2909eecdfc32f80860bddeeb15a62024287af8f68833abdb696e5542bf';
 var SHEET_NAME = 'Orders';
 var HEADERS = ['Order ID', 'Timestamp', 'Name', 'Phone', 'Address', 'City', 'State', 'PIN code', 'Email', 'Products', 'Total (INR)', 'Payment method', 'Status'];
 
