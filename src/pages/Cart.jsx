@@ -28,8 +28,8 @@ export default function Cart() {
         <ul className="divide-y divide-line border-y border-line">
           {lines.map(({ product, qty }) => (
             <li key={product.id} className="flex gap-4 py-5">
-              <Link to={product.id === 'discovery-set' ? '/discovery-set' : `/product/${product.slug}`} className="block w-24 shrink-0 overflow-hidden rounded-none bg-surface">
-                <SmartImage src={product.image} alt={product.name} ratio="4 / 5" className="!bg-transparent" imgClassName="object-contain p-2" />
+              <Link to={product.id === 'discovery-set' ? '/discovery-set' : `/product/${product.slug}`} className="block w-24 shrink-0 overflow-hidden rounded-none bg-none">
+                <SmartImage src={product.image} alt={product.name} ratio="4 / 5" className="!bg-transparent" imgClassName="object-contain p-0" />
               </Link>
               <div className="flex flex-1 flex-col justify-between">
                 <div className="flex justify-between gap-3">

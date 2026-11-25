@@ -3,9 +3,11 @@ import Reveal from './ui/Reveal';
 import SectionHeader from './ui/SectionHeader';
 import ProductCard from './ProductCard';
 import { PRODUCTS, DISCOVERY_SET } from '../data/products';
+import DiscoverySection from './DiscoverySection';
 
 export default function ProductCollection({ standalone = false }) {
   const items = standalone ? [...PRODUCTS] : PRODUCTS;
+  
   return (
     <section aria-labelledby="collection-title" className="mx-auto max-w-page px-5 py-16 md:px-8 md:py-24">
       <SectionHeader

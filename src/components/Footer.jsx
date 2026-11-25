@@ -60,7 +60,7 @@ export default function Footer() {
         <div className="mt-12 flex flex-col gap-1 border-t border-line py-5 text-xs sm:flex-row sm:justify-between">
           <div className='flex flex-col'><span>© {new Date().getFullYear()} Odour Elixirs. All rights reserved.</span>
           <span className="text-muted">{SITE.instagramHandle}</span></div>
-          <span className="text-muted">{SITE.developer} <a  className={col}  href={SITE.devlink} target="_blank" rel="noopener noreferrer" class='underline' >RehanKhatri</a> </span>
+          <span className="text-muted">{SITE.developer} <a  className="{col} underline"   href={SITE.devlink} target="_blank" rel="noopener noreferrer" >RXD</a> </span>
         </div>
 
         <p aria-hidden="true" className="select-none overflow-hidden whitespace-nowrap pt-6 text-center font-serif font-semibold uppercase leading-[0.95] tracking-light text-[11.46vw] min-[1200px]:text-[142px]"

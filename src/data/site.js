@@ -8,7 +8,7 @@ export const SITE = {
   whatsappUrl: 'https://wa.me/919427868790',
   email: '', // add if you have one
   linktree: 'https://odourelixirs.linklee.in/',
-  developer: 'Developed with ❤️ by',
+  developer: 'Developed by',
   devlink:'https://instagram.com/rehanxdev'
 };
 
